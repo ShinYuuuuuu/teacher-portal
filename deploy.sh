@@ -17,8 +17,9 @@ if ! command -v heroku &> /dev/null; then
     exit 1
 fi
 
-# Set your Heroku app name here (change this to your actual Heroku app name)
-HEROKU_APP_NAME="your-teacher-portal"
+# Set your Heroku app name here
+HEROKU_APP_NAME="your-teacher-portal-12ae9fe66833"
+>>>>>>> 36f773509ab42781ac1632e0a92187a4154626c8
 
 echo "🔗 Connecting to Heroku app..."
 heroku git:remote -a $HEROKU_APP_NAME

@@ -24,7 +24,7 @@ A revolutionary grade entry system designed specifically for teachers. Simple, f
 
 ## 🚀 Demo Access
 
-**URL:** `https://[YOUR-HEROKU-APP-NAME].herokuapp.com`
+**URL:** `https://your-teacher-portal-12ae9fe66833.herokuapp.com`
 
 **👨‍🏫 Exclusive Teacher Login:**
 - Username: `admin`
