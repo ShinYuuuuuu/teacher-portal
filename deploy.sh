@@ -17,12 +17,16 @@ if ! command -v heroku &> /dev/null; then
     exit 1
 fi
 
+# Set your Heroku app name here
+HEROKU_APP_NAME="your-teacher-portal-12ae9fe66833"
+
 echo "🔗 Connecting to Heroku app..."
-heroku git:remote -a your-teacher-portal
+heroku git:remote -a $HEROKU_APP_NAME
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to connect to Heroku app"
-    echo "Make sure 'your-teacher-portal' app exists"
+    echo "Make sure '$HEROKU_APP_NAME' app exists on Heroku"
+    echo "Create it with: heroku create $HEROKU_APP_NAME"
     exit 1
 fi
 
@@ -31,9 +35,9 @@ git push heroku main
 
 if [ $? -eq 0 ]; then
     echo "✅ Teacher Portal deployed successfully!"
-    echo "🌐 URL: https://your-teacher-portal.herokuapp.com"
+    echo "🌐 URL: https://$HEROKU_APP_NAME.herokuapp.com"
     echo "🔑 Login: admin / admin123"
 else
     echo "❌ Deployment failed"
-    echo "Check Heroku logs: heroku logs -a your-teacher-portal"
+    echo "Check Heroku logs: heroku logs -a $HEROKU_APP_NAME"
 fi

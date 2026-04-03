@@ -24,11 +24,13 @@ A revolutionary grade entry system designed specifically for teachers. Simple, f
 
 ## 🚀 Demo Access
 
-**URL:** `https://your-teacher-portal.herokuapp.com`
+**URL:** `https://your-teacher-portal-12ae9fe66833.herokuapp.com`
 
-**Login Credentials:**
+**👨‍🏫 Exclusive Teacher Login:**
 - Username: `admin`
 - Password: `admin123`
+
+*Note: This portal is exclusively for faculty members. Students should use the Student Portal.*
 
 **Demo Teacher:**
 - Dr. Maria Santos
