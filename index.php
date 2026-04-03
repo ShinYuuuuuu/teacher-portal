@@ -30,6 +30,21 @@ if ($page === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Check for redirected admin users (from student portal)
+if (!$loggedIn && isset($_SERVER['HTTP_REFERER']) &&
+    strpos($_SERVER['HTTP_REFERER'], 'your-student-portal-2ac261cb3f90.herokuapp.com') !== false) {
+    // User was redirected from student portal - set admin session
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['admin_user'] = [
+        'id' => 1,
+        'username' => 'admin',
+        'name' => 'Dr. Maria Santos',
+        'role' => 'Associate Professor',
+        'department' => 'Computer Science'
+    ];
+    $loggedIn = true;
+}
+
 // Handle logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_destroy();
