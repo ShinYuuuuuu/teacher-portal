@@ -100,9 +100,12 @@ if (!$loggedIn && $page !== 'login') {
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 px-0 sidebar">
             <div class="d-flex flex-column">
-                <div class="p-3 text-white border-bottom">
+                <div class="p-3 text-white border-bottom clickable-profile" onclick="showProfileModal()" style="cursor: pointer;">
                     <h5 class="mb-1">👨‍🏫 Teacher Portal</h5>
-                    <small><?php echo $_SESSION['admin_user']['name']; ?></small>
+                    <small><?php echo $_SESSION['admin_user']['name']; ?> • <?php echo $_SESSION['admin_user']['role']; ?></small>
+                    <div class="mt-1">
+                        <small class="text-white-50"><i class="bi bi-chevron-down me-1"></i>Click to view profile</small>
+                    </div>
                 </div>
                 <nav class="nav flex-column py-3">
                     <a class="nav-link <?php echo $page=='dashboard'?'active':'' ?>" href="?page=dashboard">
@@ -113,9 +116,6 @@ if (!$loggedIn && $page !== 'login') {
                     </a>
                     <a class="nav-link <?php echo $page=='grades'?'active':'' ?>" href="?page=grades">
                         <i class="bi bi-bar-chart me-2"></i>Grades
-                    </a>
-                    <a class="nav-link <?php echo $page=='profile'?'active':'' ?>" href="?page=profile">
-                        <i class="bi bi-person me-2"></i>Profile
                     </a>
                     <hr class="my-3">
                     <a class="nav-link text-danger" href="?action=logout">
@@ -229,10 +229,14 @@ if (!$loggedIn && $page !== 'login') {
                     cursor: pointer;
                     transition: transform 0.2s, box-shadow 0.2s;
                 }
-                .clickable-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                }
+        .clickable-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .clickable-profile:hover {
+            background-color: rgba(255,255,255,0.1) !important;
+        }
                 </style>
 
             <?php elseif ($page === 'grades'): ?>
@@ -633,119 +637,136 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php endif; ?>
 
 <?php if ($loggedIn): ?>
-    <?php if ($page === 'profile'): ?>
-                <!-- Simple Teacher Profile -->
-                <div class="card mb-4" style="background: linear-gradient(135deg, #059669, #7c3aed);">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-circle bg-white p-3 me-4">
-                                <i class="bi bi-person-circle fs-1 text-primary"></i>
-                            </div>
-                            <div class="text-white">
-                                <h2><?php echo $_SESSION['admin_user']['name']; ?></h2>
-                                <p class="mb-0" style="opacity:0.75"><?php echo $_SESSION['admin_user']['role']; ?> • <?php echo $_SESSION['admin_user']['department']; ?></p>
-                            </div>
-                        </div>
+
+<?php endif; ?>
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                <h5 class="modal-title" id="profileModalLabel"><i class="bi bi-person-circle me-2"></i>Teacher Profile</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Profile Header -->
+                <div class="text-center mb-4">
+                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="bi bi-person-circle fs-1"></i>
                     </div>
+                    <h3 class="mt-3"><?php echo $_SESSION['admin_user']['name']; ?></h3>
+                    <p class="text-muted"><?php echo $_SESSION['admin_user']['role']; ?> • <?php echo $_SESSION['admin_user']['department']; ?></p>
                 </div>
 
+                <!-- Profile Details -->
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header"><h5 class="mb-0">👨‍🏫 Teacher Information</h5></div>
+                            <div class="card-header"><h6 class="mb-0">👨‍🏫 Personal Information</h6></div>
                             <div class="card-body">
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Name:</strong></div>
-                                    <div class="col-sm-8"><?php echo $_SESSION['admin_user']['name']; ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Role:</strong></div>
-                                    <div class="col-sm-8"><?php echo $_SESSION['admin_user']['role']; ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Department:</strong></div>
-                                    <div class="col-sm-8"><?php echo $_SESSION['admin_user']['department']; ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Employee ID:</strong></div>
-                                    <div class="col-sm-8"><?php echo $_SESSION['admin_user']['username']; ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Email:</strong></div>
-                                    <div class="col-sm-8">maria.santos@university.edu</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Phone:</strong></div>
-                                    <div class="col-sm-8">+63 917 123 4567</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Office:</strong></div>
-                                    <div class="col-sm-8">Room 204, Computer Science Building</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Join Date:</strong></div>
-                                    <div class="col-sm-8">August 2018</div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-sm-4"><strong>Specialization:</strong></div>
-                                    <div class="col-sm-8">Web Development, Data Structures, Algorithms</div>
-                                </div>
+                                <div class="mb-2"><strong>Name:</strong> <?php echo $_SESSION['admin_user']['name']; ?></div>
+                                <div class="mb-2"><strong>Role:</strong> <?php echo $_SESSION['admin_user']['role']; ?></div>
+                                <div class="mb-2"><strong>Department:</strong> <?php echo $_SESSION['admin_user']['department']; ?></div>
+                                <div class="mb-2"><strong>Employee ID:</strong> <?php echo $_SESSION['admin_user']['username']; ?></div>
+                                <div class="mb-2"><strong>Email:</strong> maria.santos@university.edu</div>
+                                <div class="mb-2"><strong>Phone:</strong> +63 917 123 4567</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header"><h5 class="mb-0">📊 Teaching Summary</h5></div>
+                            <div class="card-header"><h6 class="mb-0">🏢 Professional Details</h6></div>
                             <div class="card-body">
-                                <div class="row text-center mb-3">
-                                    <div class="col-6">
-                                        <div class="p-2 bg-primary text-white rounded">
-                                            <h4 class="mb-1">3</h4>
-                                            <small>Active Classes</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-2 bg-success text-white rounded">
-                                            <h4 class="mb-1">105</h4>
-                                            <small>Total Students</small>
-                                        </div>
-                                    </div>
+                                <div class="mb-2"><strong>Office:</strong> Room 204, CS Building</div>
+                                <div class="mb-2"><strong>Join Date:</strong> August 2018</div>
+                                <div class="mb-2"><strong>Experience:</strong> 6 years</div>
+                                <div class="mb-3"><strong>Specialization:</strong><br>
+                                    <small>Web Development, Data Structures, Algorithms</small>
                                 </div>
-                                <div class="row text-center mb-3">
-                                    <div class="col-6">
-                                        <div class="p-2 bg-info text-white rounded">
-                                            <h4 class="mb-1">1</h4>
-                                            <small>Grades Submitted</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-2 bg-warning text-white rounded">
-                                            <h4 class="mb-1">2</h4>
-                                            <small>Pending Grades</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <h6>📚 Current Semester Classes:</h6>
-                                <ul class="list-unstyled small">
-                                    <li><i class="bi bi-book me-2"></i>CS101 - Programming Fundamentals (42 students)</li>
-                                    <li><i class="bi bi-diagram-3 me-2"></i>CS201 - Data Structures (35 students)</li>
-                                    <li><i class="bi bi-globe me-2"></i>CS301 - Web Development (28 students)</li>
-                                </ul>
                                 <hr>
                                 <h6>🏆 Achievements:</h6>
-                                <ul class="list-unstyled small">
-                                    <li><i class="bi bi-trophy me-2 text-warning"></i>Teacher of the Year 2023</li>
-                                    <li><i class="bi bi-star me-2 text-warning"></i>95% Student Satisfaction Rate</li>
-                                    <li><i class="bi bi-award me-2 text-warning"></i>Published 5 Research Papers</li>
-                                </ul>
+                                <small>
+                                    • Teacher of the Year 2023<br>
+                                    • 95% Student Satisfaction Rate<br>
+                                    • Published 5 Research Papers
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
 
-    <?php endif; ?>
-<?php endif; ?>
+                <!-- Password Update Section -->
+                <div class="card mt-4">
+                    <div class="card-header"><h6 class="mb-0">🔐 Update Password</h6></div>
+                    <div class="card-body">
+                        <form id="passwordForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-key me-2"></i>Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Profile modal functions
+function showProfileModal() {
+    const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+    modal.show();
+}
+
+// Password update functionality
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Basic validation
+    if (newPassword !== confirmPassword) {
+        alert('New password and confirmation do not match!');
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        alert('Password must be at least 6 characters long!');
+        return;
+    }
+
+    // Simulate password update
+    alert('✅ Password updated successfully!');
+
+    // Clear form
+    this.reset();
+
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+    modal.hide();
+});
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
