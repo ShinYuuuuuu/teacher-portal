@@ -8,7 +8,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 // Check login
 $loggedIn = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 
-// Handle login
+// Handle login (redirected from student portal)
 if ($page === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -458,30 +458,24 @@ if (!$loggedIn && $page !== 'login') {
             <div class="card">
                 <div class="card-header bg-primary text-white text-center py-4">
                     <h3><i class="bi bi-chalkboard-teacher me-2"></i>Teacher Portal</h3>
-                    <p class="mb-0">Administrative Access</p>
+                    <p class="mb-0">Login via Student Portal</p>
                 </div>
                 <div class="card-body p-4">
-                    <?php if (isset($loginError)): ?>
-                    <div class="alert alert-danger"><?php echo $loginError; ?></div>
-                    <?php endif; ?>
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control" placeholder="Enter username" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Enter password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
-                    </form>
-                    <div class="mt-4 p-3 bg-light rounded">
-                        <small><strong>Demo Access:</strong><br>
-                        Username: <code>admin</code><br>
-                        Password: <code>admin123</code></small>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Use the main Student Portal login page.</strong><br>
+                        Enter admin credentials there to access the Teacher Portal.
                     </div>
-                    <div class="mt-3 text-center">
-                        <small class="text-muted">Looking for Student Portal? <a href="../">Click here</a></small>
+                    <div class="text-center">
+                        <a href="https://your-student-portal-2ac261cb3f90.herokuapp.com/?page=login" class="btn btn-primary">
+                            <i class="bi bi-arrow-left me-2"></i>Go to Main Login
+                        </a>
+                    </div>
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <small><strong>Teacher Credentials:</strong><br>
+                        Username: <code>admin</code><br>
+                        Password: <code>admin123</code><br>
+                        <em>Enter these at the main login page</em></small>
                     </div>
                 </div>
             </div>
