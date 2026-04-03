@@ -65,6 +65,39 @@ if (!$loggedIn && $page !== 'login') {
         .navbar { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .nav-link { color: var(--dark) !important; }
         .nav-link.active { color: var(--primary) !important; font-weight: 600; }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -100%; top: 0; width: 280px; z-index: 1050; transition: left 0.3s ease; }
+            .sidebar.show { left: 0; }
+            .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1049; display: none; }
+            .sidebar-overlay.show { display: block; }
+            .main-content { margin-left: 0; }
+            .mobile-header { display: flex !important; }
+            .grade-table { font-size: 0.8rem; }
+            .table-responsive { font-size: 0.85rem; }
+            .btn { min-height: 44px; padding: 0.5rem 1rem; }
+            .card-body { padding: 1rem 0.75rem; }
+            .clickable-profile { padding: 0.75rem; }
+
+            /* Dashboard improvements for mobile */
+            .row.mb-4 > .col-md-6 { margin-bottom: 1rem; }
+            .card .btn { font-size: 0.9rem; }
+            .h3 { font-size: 1.5rem; }
+            .h6 { font-size: 0.9rem; }
+
+            /* Better touch targets */
+            .nav-link { padding: 0.75rem 1rem; min-height: 48px; }
+            .btn { min-height: 48px; }
+            input, select, textarea { min-height: 44px; }
+
+            /* Modal improvements */
+            .modal-dialog { margin: 0.5rem; max-width: none; }
+            .modal-content { border-radius: 8px; }
+        }
+
+        .mobile-header { display: none; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--primary); color: white; position: sticky; top: 0; z-index: 1030; }
+        .mobile-menu-btn { background: none; border: none; color: white; font-size: 1.25rem; padding: 0.25rem; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .card:hover { transform: translateY(-2px); }
         .btn-primary { background: var(--primary); border: none; }
@@ -95,6 +128,20 @@ if (!$loggedIn && $page !== 'login') {
 <body>
 
 <?php if ($loggedIn): ?>
+<!-- Mobile Header -->
+<div class="mobile-header">
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="text-center flex-grow-1">
+        <h6 class="mb-0">👨‍🏫 Teacher Portal</h6>
+    </div>
+    <div></div>
+</div>
+
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -126,7 +173,7 @@ if (!$loggedIn && $page !== 'login') {
         </div>
 
         <!-- Main Content -->
-        <div class="col-md-9 col-lg-10 px-4 py-4">
+        <div class="col-md-9 col-lg-10 px-4 py-4 main-content">
             <?php if ($page === 'dashboard'): ?>
                 <!-- Simplified Teacher Dashboard -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -278,7 +325,7 @@ if (!$loggedIn && $page !== 'login') {
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                             <table class="table table-hover mb-0" id="gradesTable">
+                             <table class="table table-hover mb-0" id="gradesTable" style="min-width: 600px;">
                                  <thead class="table-light" style="position: sticky; top: 0; z-index: 10;">
                                      <tr>
                                          <th class="border-end">#</th>
@@ -731,6 +778,36 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <script>
+// Mobile sidebar functionality
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+}
+
+// Close sidebar when clicking a nav link on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.sidebar .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+
+    // Close sidebar on window resize if open on mobile
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+    });
+});
+
 // Profile modal functions
 function showProfileModal() {
     const modal = new bootstrap.Modal(document.getElementById('profileModal'));
