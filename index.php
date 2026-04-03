@@ -30,6 +30,8 @@ if ($page === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Note: Direct teacher login is now available via the login form
+// Redirection from student portal is no longer needed
 // Handle logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_destroy();
@@ -78,6 +80,16 @@ if (!$loggedIn && $page !== 'login') {
         .status-good { background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; }
         .status-average { background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; }
         .status-poor { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; }
+
+        /* Login form styles */
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); }
+        .input-group-text { background-color: #f8fafc; border-color: #e5e7eb; }
+        .btn-primary:hover { background-color: #047857; transform: translateY(-1px); }
+        .alert { border: none; border-radius: 8px; }
+
+        /* Teacher-only warning */
+        .bg-warning { background: linear-gradient(135deg, #fbbf24, #f59e0b) !important; border: 2px solid #d97706; }
+        .bg-warning .text-dark { color: #92400e !important; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -583,39 +595,135 @@ if (!$loggedIn && $page !== 'login') {
 </div>
 
 <?php else: ?>
-<!-- Login Page -->
+<!-- Direct Teacher Login Page -->
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card">
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <h3><i class="bi bi-chalkboard-teacher me-2"></i>Teacher Portal</h3>
-                    <p class="mb-0">Administrative Access</p>
+                <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                    <h3><i class="bi bi-chalkboard-teacher me-2"></i>👨‍🏫 Teacher Login</h3>
+                    <p class="mb-0"><strong>Exclusive Access for Faculty Members</strong></p>
                 </div>
                 <div class="card-body p-4">
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        <strong>Use the main Student Portal login page.</strong><br>
-                        Enter admin credentials there to access the Teacher Portal.
+                    <?php if (isset($loginError)): ?>
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <?php echo $loginError; ?>
                     </div>
-                    <div class="text-center">
-                        <a href="https://your-student-portal-2ac261cb3f90.herokuapp.com/?page=login" class="btn btn-primary">
-                            <i class="bi bi-arrow-left me-2"></i>Go to Main Login
-                        </a>
+                    <?php endif; ?>
+
+                    <form method="POST" action="?page=login">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">👨‍🏫 Teacher Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="Enter your faculty username" required
+                                       value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">🔐 Faculty Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Enter your faculty password" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>👨‍🏫 Access Teacher Portal
+                        </button>
+                    </form>
+
+                    <div class="mt-4 p-3 bg-warning rounded">
+                        <h6 class="mb-2"><i class="bi bi-exclamation-triangle text-dark me-1"></i>⚠️ Faculty Only Access</h6>
+                        <small class="text-dark">
+                            This portal is exclusively for teachers and faculty members.<br>
+                            Students should use the <strong>Student Portal</strong> instead.
+                        </small>
                     </div>
-                    <div class="mt-4 p-3 bg-light rounded">
-                        <small><strong>Demo Access:</strong><br>
-                        Username: <code>admin</code><br>
-                        Password: <code>admin123</code></small>
+
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6 class="mb-2"><i class="bi bi-key text-primary me-1"></i>Demo Teacher Account</h6>
+                        <small>
+                            <strong>Username:</strong> <code>admin</code><br>
+                            <strong>Password:</strong> <code>admin123</code><br>
+                            <em>Dr. Maria Santos - Computer Science</em>
+                        </small>
                     </div>
+
                     <div class="mt-3 text-center">
-                        <small class="text-muted">Looking for Student Portal? <a href="https://your-student-portal-2ac261cb3f90.herokuapp.com" target="_blank">Click here</a></small>
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check me-1"></i>
+                            Secure faculty authentication system
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+</div>
+
+<script>
+// Auto-focus username field and add form enhancements
+document.addEventListener('DOMContentLoaded', function() {
+    const usernameField = document.getElementById('username');
+    if (usernameField) {
+        usernameField.focus();
+    }
+
+    // Form submission feedback
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !password) {
+                e.preventDefault();
+                alert('⚠️ Faculty Access Required: Please enter both username and password.');
+                return false;
+            }
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>🔐 Authenticating Faculty Access...';
+            }
+        });
+    }
+
+    // Toggle password visibility
+    const passwordInput = document.getElementById('password');
+    if (passwordInput) {
+        // Add toggle button if needed
+        const inputGroup = passwordInput.parentElement;
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'btn btn-outline-secondary';
+        toggleBtn.innerHTML = '<i class="bi bi-eye"></i>';
+        toggleBtn.onclick = function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            this.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+        };
+        inputGroup.appendChild(toggleBtn);
+    }
+});
+</script>
+
+<?php endif; ?>
 
 <?php if ($loggedIn): ?>
     <?php if ($page === 'profile'): ?>
