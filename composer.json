@@ -1,0 +1,10 @@
+{
+    "description": "Teacher/Admin Portal for Student Management System",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-mysqli": "*"
+    },
+    "minimum-stability": "stable"
+}
