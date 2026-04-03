@@ -8,7 +8,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 // Check login
 $loggedIn = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 
-// Handle login (redirected from student portal)
+// Handle login
 if ($page === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -28,21 +28,6 @@ if ($page === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $loginError = "Invalid credentials";
     }
-}
-
-// Check for redirected admin users (from student portal)
-if (!$loggedIn && isset($_SERVER['HTTP_REFERER']) &&
-    strpos($_SERVER['HTTP_REFERER'], 'your-student-portal-2ac261cb3f90.herokuapp.com') !== false) {
-    // User was redirected from student portal - set admin session
-    $_SESSION['admin_logged_in'] = true;
-    $_SESSION['admin_user'] = [
-        'id' => 1,
-        'username' => 'admin',
-        'name' => 'Dr. Maria Santos',
-        'role' => 'Associate Professor',
-        'department' => 'Computer Science'
-    ];
-    $loggedIn = true;
 }
 
 // Handle logout
@@ -473,7 +458,7 @@ if (!$loggedIn && $page !== 'login') {
             <div class="card">
                 <div class="card-header bg-primary text-white text-center py-4">
                     <h3><i class="bi bi-chalkboard-teacher me-2"></i>Teacher Portal</h3>
-                    <p class="mb-0">Login via Student Portal</p>
+                    <p class="mb-0">Administrative Access</p>
                 </div>
                 <div class="card-body p-4">
                     <div class="alert alert-info">
@@ -487,10 +472,12 @@ if (!$loggedIn && $page !== 'login') {
                         </a>
                     </div>
                     <div class="mt-4 p-3 bg-light rounded">
-                        <small><strong>Teacher Credentials:</strong><br>
+                        <small><strong>Demo Access:</strong><br>
                         Username: <code>admin</code><br>
-                        Password: <code>admin123</code><br>
-                        <em>Enter these at the main login page</em></small>
+                        Password: <code>admin123</code></small>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">Looking for Student Portal? <a href="https://your-student-portal-2ac261cb3f90.herokuapp.com" target="_blank">Click here</a></small>
                     </div>
                 </div>
             </div>
