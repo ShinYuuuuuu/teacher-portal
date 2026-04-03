@@ -267,8 +267,8 @@ if (!$loggedIn && $page !== 'login') {
 
                 <div class="alert alert-info">
                     <i class="bi bi-info-circle me-2"></i>
-                    <strong>How to use:</strong> Click the "Edit" button for each student to modify their grades.
-                    Changes are saved automatically. When finished, click "Submit Final Grades" to lock all entries.
+                    <strong>How to use:</strong> Click on any grade cell to edit. Changes are saved automatically.
+                    When finished, click "Submit Final Grades" to lock all entries.
                 </div>
 
                 <div class="card">
@@ -282,7 +282,6 @@ if (!$loggedIn && $page !== 'login') {
                                          <th class="border-end text-center bg-light">Midterm</th>
                                          <th class="border-end text-center bg-light">Final</th>
                                          <th class="text-center">Remarks</th>
-                                         <th class="text-center">Actions</th>
                                      </tr>
                                  </thead>
                                 <tbody>
@@ -290,145 +289,85 @@ if (!$loggedIn && $page !== 'login') {
                                          <td class="border-end fw-bold">1</td>
                                          <td class="border-end fw-bold">Reynante Yu</td>
                                          <td class="border-end text-center">
-                                             <span id="rey-yu-midterm-display">88</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="88" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="rey-yu-midterm">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="88" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'rey-yu', 'midterm')" id="rey-yu-midterm">
                                          </td>
                                          <td class="border-end text-center">
-                                             <span id="rey-yu-final-display">90</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="90" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="rey-yu-final">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="90" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'rey-yu', 'final')" id="rey-yu-final">
                                          </td>
                                          <td class="text-center">
                                              <span class="badge bg-success fs-6" id="rey-yu-remarks">Passed</span>
-                                         </td>
-                                         <td class="text-center">
-                                             <div class="btn-group btn-group-sm">
-                                                 <button class="btn btn-outline-primary btn-sm" onclick="editGrade('rey-yu', 'midterm')" id="edit-rey-yu-midterm">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                                 <button class="btn btn-outline-success btn-sm" onclick="editGrade('rey-yu', 'final')" id="edit-rey-yu-final">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                             </div>
                                          </td>
                                      </tr>
                                      <tr>
                                          <td class="border-end fw-bold">2</td>
                                          <td class="border-end fw-bold">Anna Cruz</td>
                                          <td class="border-end text-center">
-                                             <span id="anna-cruz-midterm-display">82</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="82" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="anna-cruz-midterm">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="82" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'anna-cruz', 'midterm')" id="anna-cruz-midterm">
                                          </td>
                                          <td class="border-end text-center">
-                                             <span id="anna-cruz-final-display">87</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="87" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="anna-cruz-final">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="87" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'anna-cruz', 'final')" id="anna-cruz-final">
                                          </td>
                                          <td class="text-center">
                                              <span class="badge bg-success fs-6" id="anna-cruz-remarks">Passed</span>
                                          </td>
-                                         <td class="text-center">
-                                             <div class="btn-group btn-group-sm">
-                                                 <button class="btn btn-outline-primary btn-sm" onclick="editGrade('anna-cruz', 'midterm')" id="edit-anna-cruz-midterm">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                                 <button class="btn btn-outline-success btn-sm" onclick="editGrade('anna-cruz', 'final')" id="edit-anna-cruz-final">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                             </div>
-                                         </td>
                                      </tr>
-                                     <tr>
+                                      <tr>
                                          <td class="border-end fw-bold">3</td>
                                          <td class="border-end fw-bold">Miguel Santos</td>
                                          <td class="border-end text-center">
-                                             <span id="miguel-santos-midterm-display">75</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="75" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="miguel-santos-midterm">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="75" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'miguel-santos', 'midterm')" id="miguel-santos-midterm">
                                          </td>
                                          <td class="border-end text-center">
-                                             <span id="miguel-santos-final-display">78</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="78" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="miguel-santos-final">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="78" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'miguel-santos', 'final')" id="miguel-santos-final">
                                          </td>
                                          <td class="text-center">
                                              <span class="badge bg-danger fs-6" id="miguel-santos-remarks">Failed</span>
-                                         </td>
-                                         <td class="text-center">
-                                             <div class="btn-group btn-group-sm">
-                                                 <button class="btn btn-outline-primary btn-sm" onclick="editGrade('miguel-santos', 'midterm')" id="edit-miguel-santos-midterm">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                                 <button class="btn btn-outline-success btn-sm" onclick="editGrade('miguel-santos', 'final')" id="edit-miguel-santos-final">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                             </div>
                                          </td>
                                      </tr>
                                      <tr>
                                          <td class="border-end fw-bold">4</td>
                                          <td class="border-end fw-bold">Sarah Lim</td>
                                          <td class="border-end text-center">
-                                             <span id="sarah-lim-midterm-display">70</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="70" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="sarah-lim-midterm">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="70" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'sarah-lim', 'midterm')" id="sarah-lim-midterm">
                                          </td>
                                          <td class="border-end text-center">
-                                             <span id="sarah-lim-final-display">72</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    value="72" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="sarah-lim-final">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    value="72" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'sarah-lim', 'final')" id="sarah-lim-final">
                                          </td>
                                          <td class="text-center">
                                              <span class="badge bg-danger fs-6" id="sarah-lim-remarks">Failed</span>
-                                         </td>
-                                         <td class="text-center">
-                                             <div class="btn-group btn-group-sm">
-                                                 <button class="btn btn-outline-primary btn-sm" onclick="editGrade('sarah-lim', 'midterm')" id="edit-sarah-lim-midterm">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                                 <button class="btn btn-outline-success btn-sm" onclick="editGrade('sarah-lim', 'final')" id="edit-sarah-lim-final">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                             </div>
                                          </td>
                                      </tr>
                                      <tr>
                                          <td class="border-end fw-bold">5</td>
                                          <td class="border-end fw-bold">John Rivera</td>
                                          <td class="border-end text-center">
-                                             <span id="john-rivera-midterm-display">--</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    placeholder="--" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="john-rivera-midterm">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    placeholder="--" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'john-rivera', 'midterm')" id="john-rivera-midterm">
                                          </td>
                                          <td class="border-end text-center">
-                                             <span id="john-rivera-final-display">--</span>
-                                             <input type="number" class="grade-input form-control text-center border-0"
-                                                    placeholder="--" min="0" max="100" maxlength="3" style="display:none;"
-                                                    id="john-rivera-final">
+                                             <input type="number" class="grade-input form-control text-center border-0 bg-transparent"
+                                                    placeholder="--" min="0" max="100" maxlength="3"
+                                                    oninput="autoSave(this, 'john-rivera', 'final')" id="john-rivera-final">
                                          </td>
                                          <td class="text-center">
                                              <span class="badge bg-secondary fs-6" id="john-rivera-remarks">--</span>
-                                         </td>
-                                         <td class="text-center">
-                                             <div class="btn-group btn-group-sm">
-                                                 <button class="btn btn-outline-primary btn-sm" onclick="editGrade('john-rivera', 'midterm')" id="edit-john-rivera-midterm">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                                 <button class="btn btn-outline-success btn-sm" onclick="editGrade('john-rivera', 'final')" id="edit-john-rivera-final">
-                                                     <i class="bi bi-pencil"></i>
-                                                 </button>
-                                             </div>
                                          </td>
                                      </tr>
                                 </tbody>
@@ -447,7 +386,6 @@ if (!$loggedIn && $page !== 'login') {
                 };
 
                 let isSubmitted = false;
-                let editMode = {};
 
                 function autoSave(input, student, type) {
                     if (isSubmitted) return;
@@ -476,49 +414,31 @@ if (!$loggedIn && $page !== 'login') {
                     }
                 }
 
-                function editGrade(student, type) {
+                function autoSave(input, student, type) {
                     if (isSubmitted) return;
 
-                    const inputId = `${student}-${type}`;
-                    const displayId = `${student}-${type}-display`;
-                    const editBtn = document.getElementById(`edit-${student}-${type}`);
+                    const value = parseInt(input.value) || null;
+                    gradesData[student][type] = value;
 
-                    // Toggle edit mode
-                    if (editMode[inputId]) {
-                        // Save mode
-                        const input = document.getElementById(inputId);
-                        const value = parseInt(input.value) || null;
-                        gradesData[student][type] = value;
+                    // Auto-update remarks
+                    updateRemarks(student);
 
-                        // Update display
-                        document.getElementById(displayId).textContent = value || '--';
-                        document.getElementById(displayId).style.display = 'block';
-                        input.style.display = 'none';
+                    // Simulate save to database
+                    console.log(`Saved ${student} ${type}: ${value}`);
+                }
 
-                        // Update button
-                        editBtn.innerHTML = '<i class="bi bi-pencil"></i>';
-                        editBtn.className = 'btn btn-outline-primary btn-sm';
+                function updateRemarks(student) {
+                    const midterm = gradesData[student].midterm;
+                    const final = gradesData[student].final;
 
-                        // Update remarks
-                        updateRemarks(student);
+                    if (midterm !== null && final !== null) {
+                        const average = (midterm + final) / 2;
+                        const passed = average >= 75; // Assuming 75 is passing grade
 
-                        // Simulate save
-                        console.log(`Saved ${student} ${type}: ${value}`);
-                    } else {
-                        // Edit mode
-                        const display = document.getElementById(displayId);
-                        const input = document.getElementById(inputId);
-
-                        display.style.display = 'none';
-                        input.style.display = 'block';
-                        input.focus();
-
-                        // Update button
-                        editBtn.innerHTML = '<i class="bi bi-check"></i>';
-                        editBtn.className = 'btn btn-success btn-sm';
+                        const remarksElement = document.getElementById(`${student}-remarks`);
+                        remarksElement.textContent = passed ? 'Passed' : 'Failed';
+                        remarksElement.className = `badge fs-6 ${passed ? 'bg-success' : 'bg-danger'}`;
                     }
-
-                    editMode[inputId] = !editMode[inputId];
                 }
 
                 function submitFinalGrades() {
@@ -527,24 +447,11 @@ if (!$loggedIn && $page !== 'login') {
                     const confirmed = confirm('Are you sure you want to submit final grades? This action cannot be undone and all grades will be locked.');
                     if (!confirmed) return;
 
-                    // Lock all inputs and hide edit buttons
+                    // Lock all inputs
                     const inputs = document.querySelectorAll('.grade-input');
-                    const editBtns = document.querySelectorAll('[id^="edit-"]');
-
                     inputs.forEach(input => {
                         input.disabled = true;
                         input.style.backgroundColor = '#f8f9fa';
-                        input.style.display = 'none';
-                    });
-
-                    editBtns.forEach(btn => {
-                        btn.style.display = 'none';
-                    });
-
-                    // Show display values
-                    const displays = document.querySelectorAll('[id$="-display"]');
-                    displays.forEach(display => {
-                        display.style.display = 'block';
                     });
 
                     // Update submit button
